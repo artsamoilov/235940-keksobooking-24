@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Артур Самойлов](https://up.htmlacademy.ru/javascript/24/user/235940).
-* Наставник: `Неизвестно`.
+* Наставник: [Даниил Царёв](https://up.htmlacademy.ru/profession/react/8/javascript/user/945835).
 
 ---
 
