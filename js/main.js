@@ -7,8 +7,10 @@ function getIntegerFromRange(min, max) {
 }
 
 function getFormattedFloatFromRange(min, max, floatLength) {
-  return getFloatFromRange(min, max).toFixed(floatLength);
+  return Number(getFloatFromRange(min, max).toFixed(floatLength));
 }
 
-getIntegerFromRange(0, 10);
-getFormattedFloatFromRange(1.0, 1.1, 3);
+console.log(getIntegerFromRange(0, 10));
+console.log(typeof getIntegerFromRange(0, 10));
+console.log(getFormattedFloatFromRange(1.0, 1.1, 3));
+console.log(typeof getFormattedFloatFromRange(1.0, 1.1, 3));
