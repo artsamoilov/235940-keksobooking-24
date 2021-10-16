@@ -1,12 +1,11 @@
 import {HOUSING_TYPES} from './data.js';
 
+const addExistingTextContent = (node, text) => text ? node.textContent = text : node.classList.add('hidden');
+
+const addExistingSource = (node, source) => source ? node.src = source : node.classList.add('hidden');
+
 const createPopup = (housing) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-  const popupPhotosContainer = cardTemplate.querySelector('.popup__photos');
-  const photoTemplate = popupPhotosContainer.querySelector('.popup__photo');
-
-  const addExistingTextContent = (node, text) => text ? node.textContent = text : node.classList.add('hidden');
-  const addExistingSource = (node, source) => source ? node.src = source : node.classList.add('hidden');
 
   addExistingSource(cardTemplate.querySelector('.popup__avatar'), housing.author.avatar);
   addExistingTextContent(cardTemplate.querySelector('.popup__title'), housing.offer.title);
@@ -27,6 +26,9 @@ const createPopup = (housing) => {
       featureItem.remove();
     }
   });
+
+  const popupPhotosContainer = cardTemplate.querySelector('.popup__photos');
+  const photoTemplate = popupPhotosContainer.querySelector('.popup__photo');
 
   housing.offer.photos.forEach((photoSource) => {
     const photoElement = photoTemplate.cloneNode();
