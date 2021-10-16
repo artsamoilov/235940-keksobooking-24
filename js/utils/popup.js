@@ -1,4 +1,4 @@
-import {HOUSING_TYPES} from './data.js';
+import {HousingTypes} from './data.js';
 
 const addExistingTextContent = (node, text) => text ? node.textContent = text : node.classList.add('hidden');
 
@@ -11,7 +11,7 @@ const createPopup = (housing) => {
   addExistingTextContent(cardTemplate.querySelector('.popup__title'), housing.offer.title);
   addExistingTextContent(cardTemplate.querySelector('.popup__text--address'), housing.offer.address);
   addExistingTextContent(cardTemplate.querySelector('.popup__text--price'), `${housing.offer.price} ₽/ночь`);
-  addExistingTextContent(cardTemplate.querySelector('.popup__type'), HOUSING_TYPES[housing.offer.type]);
+  addExistingTextContent(cardTemplate.querySelector('.popup__type'), HousingTypes[housing.offer.type]);
   addExistingTextContent(cardTemplate.querySelector('.popup__text--capacity'), `${housing.offer.rooms} комнаты для ${housing.offer.guests} гостей`);
   addExistingTextContent(cardTemplate.querySelector('.popup__text--time'), `Заезд после ${housing.offer.checkin}, выезд до ${housing.offer.checkout}`);
   addExistingTextContent(cardTemplate.querySelector('.popup__description'), housing.offer.description);

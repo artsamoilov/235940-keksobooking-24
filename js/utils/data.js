@@ -1,11 +1,11 @@
 import {getFloatFromRange, getIntegerFromRange} from './utils.js';
 
-const HOUSING_TYPES = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalow: 'Бунгало',
-  hotel: 'Отель',
+const HousingTypes = {
+  PALACE: 'Дворец',
+  FLAT: 'Квартира',
+  HOUSE: 'Дом',
+  BUNGALOW: 'Бунгало',
+  HOTEL: 'Отель',
 };
 
 const CHECK_VARIANTS = [
@@ -63,7 +63,7 @@ const createHousingOffers = (quantity) => {
         title: TITLES[getIntegerFromRange(0, TITLES.length - 1)],
         address: housingLocation.join(', '),
         price: getIntegerFromRange(1000, 100000),
-        type: Object.keys(HOUSING_TYPES)[getIntegerFromRange(0, Object.keys(HOUSING_TYPES).length - 1)],
+        type: Object.keys(HousingTypes)[getIntegerFromRange(0, Object.keys(HousingTypes).length - 1)],
         rooms: getIntegerFromRange(1, 10),
         guests: getIntegerFromRange(1, 10),
         checkin: CHECK_VARIANTS[getIntegerFromRange(0, CHECK_VARIANTS.length - 1)],
@@ -82,4 +82,4 @@ const createHousingOffers = (quantity) => {
   return Array.from({length: quantity}, createHousing);
 };
 
-export {HOUSING_TYPES, createHousingOffers};
+export {HousingTypes, createHousingOffers};
