@@ -1,5 +1,5 @@
 import {createHousingOffers} from './utils/data.js';
-import {createPopup} from './utils/card.js';
+import {createPopup} from './utils/popup.js';
 import {getIntegerFromRange} from './utils/utils.js';
 
 const HOUSING_QUANTITY = 10;
