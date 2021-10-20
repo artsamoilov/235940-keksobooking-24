@@ -1,7 +1,14 @@
 import {createHousingOffers} from './utils/data.js';
-import {createPopup} from './utils/popup.js';
+import {renderPopup, setFilterEnabled} from './utils/map.js';
+import {setFormEnabled} from './utils/form.js';
 
 const HOUSING_QUANTITY = 10;
 const housingOffers = createHousingOffers(HOUSING_QUANTITY);
 
-createPopup(housingOffers[0]);
+renderPopup(housingOffers[0]);
+
+setFormEnabled(false);
+setFormEnabled(true);
+
+setFilterEnabled(false);
+setFilterEnabled(true);

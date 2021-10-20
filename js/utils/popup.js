@@ -37,7 +37,7 @@ const createPopup = ({author: {avatar}, offer: {title, address, price, type, roo
   });
   photoTemplate.remove();
 
-  document.querySelector('#map-canvas').append(cardTemplate);
+  return cardTemplate;
 };
 
 export {createPopup};
