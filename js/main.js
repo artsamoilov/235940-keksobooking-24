@@ -12,4 +12,4 @@ const setPageEnabled = (enabled) => {
   setFormEnabled(enabled);
 };
 
-setPageEnabled(false);
+setPageEnabled(true);
