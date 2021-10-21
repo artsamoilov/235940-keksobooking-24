@@ -1,5 +1,13 @@
 import {getFloatFromRange, getIntegerFromRange} from './utils.js';
 
+const MinPrices = {
+  PALACE: 10000,
+  FLAT: 1000,
+  HOUSE: 5000,
+  BUNGALOW: 0,
+  HOTEL: 3000,
+};
+
 const HousingTypes = {
   PALACE: 'Дворец',
   FLAT: 'Квартира',
@@ -82,4 +90,4 @@ const createHousingOffers = (quantity) => {
   return Array.from({length: quantity}, createHousing);
 };
 
-export {HousingTypes, createHousingOffers};
+export {HousingTypes, MinPrices, createHousingOffers};
