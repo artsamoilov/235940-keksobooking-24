@@ -3,39 +3,39 @@ import {MinPrices} from './data.js';
 
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
 const adForm = document.querySelector('.ad-form');
-const adFormType = adForm.querySelector('#type');
-const adFormPrice = adForm.querySelector('#price');
-const adFormRoomNumber = adForm.querySelector('#room_number');
-const adFormCapacity = adForm.querySelector('#capacity');
+const type = adForm.querySelector('#type');
+const price = adForm.querySelector('#price');
+const roomNumber = adForm.querySelector('#room_number');
+const capacity = adForm.querySelector('#capacity');
 
 const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
 
-adFormType.addEventListener('change', () => {
-  const minPrice = MinPrices[adFormType.value.toUpperCase()];
-  adFormPrice.placeholder = minPrice;
-  adFormPrice.min = minPrice;
+type.addEventListener('change', () => {
+  const minPrice = MinPrices[type.value.toUpperCase()];
+  price.placeholder = minPrice;
+  price.min = minPrice;
 });
 
 const validateRooms = () => {
-  const roomNumber = Number(adFormRoomNumber.value);
-  const roomCapacity = Number(adFormCapacity.value);
-  adFormCapacity.setCustomValidity('');
-  if (roomNumber === 100) {
-    if (roomCapacity !== 0) {
-      adFormCapacity.setCustomValidity('Доступно только не для гостей');
+  const roomNumberValue = Number(roomNumber.value);
+  const capacityValue = Number(capacity.value);
+  capacity.setCustomValidity('');
+  if (roomNumberValue === 100) {
+    if (capacityValue !== 0) {
+      capacity.setCustomValidity('Доступно только не для гостей');
     }
   } else {
-    if (roomCapacity === 0) {
-      adFormCapacity.setCustomValidity(`${roomNumber} комн. жильё доступно только для гостей`);
-    } else if (roomCapacity > roomNumber) {
-      adFormCapacity.setCustomValidity(`В ${roomNumber} комн. можно разместить только ${roomNumber} чел.`);
+    if (capacityValue === 0) {
+      capacity.setCustomValidity(`${roomNumberValue} комн. жильё доступно только для гостей`);
+    } else if (capacityValue > roomNumberValue) {
+      capacity.setCustomValidity(`В ${roomNumberValue} комн. можно разместить только ${roomNumberValue} чел.`);
     }
   }
-  adFormCapacity.reportValidity();
+  capacity.reportValidity();
 };
 
-adFormRoomNumber.addEventListener('change', validateRooms);
+roomNumber.addEventListener('change', validateRooms);
 
-adFormCapacity.addEventListener('change', validateRooms);
+capacity.addEventListener('change', validateRooms);
 
 export {setFormEnabled};
