@@ -1,11 +1,19 @@
 import {getFloatFromRange, getIntegerFromRange} from './utils.js';
 
+const MinPrices = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
+};
+
 const HousingTypes = {
-  PALACE: 'Дворец',
-  FLAT: 'Квартира',
-  HOUSE: 'Дом',
   BUNGALOW: 'Бунгало',
+  FLAT: 'Квартира',
   HOTEL: 'Отель',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
 };
 
 const CHECK_VARIANTS = [
@@ -82,4 +90,4 @@ const createHousingOffers = (quantity) => {
   return Array.from({length: quantity}, createHousing);
 };
 
-export {HousingTypes, createHousingOffers};
+export {HousingTypes, MinPrices, createHousingOffers};

@@ -7,8 +7,9 @@ const housingOffers = createHousingOffers(HOUSING_QUANTITY);
 
 renderPopup(housingOffers[0]);
 
-setFormEnabled(false);
-setFormEnabled(true);
+const setPageEnabled = (enabled) => {
+  setFilterEnabled(enabled);
+  setFormEnabled(enabled);
+};
 
-setFilterEnabled(false);
-setFilterEnabled(true);
+setPageEnabled(true);
