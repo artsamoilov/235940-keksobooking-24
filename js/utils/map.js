@@ -1,5 +1,7 @@
 import {createPopup} from './popup.js';
 import {setEnabled} from './utils.js';
+import {addCoordinates} from './form.js';
+import {TokyoCoordinates} from './data.js';
 
 const MAP_FILTER_DISABILITY_CLASS = 'map__filters--disabled';
 const mapFilter = document.querySelector('.map__filters');
@@ -32,8 +34,8 @@ const createMarkers = (offers) => {
 
 const initializeMap = (offers) => {
   map.setView({
-    lat: 35.68,
-    lng: 139.74,
+    lat: TokyoCoordinates.LAT,
+    lng: TokyoCoordinates.LNG,
   }, 13);
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -48,14 +50,18 @@ const initializeMap = (offers) => {
   });
   const mainMarker = L.marker(
     {
-      lat: 35.68,
-      lng: 139.74,
+      lat: TokyoCoordinates.LAT,
+      lng: TokyoCoordinates.LNG,
     },
     {
       draggable: true,
       icon: mainMarkerIcon,
     },
   );
+  addCoordinates(mainMarker.getLatLng());
+  mainMarker.on('moveend', (evt) => {
+    addCoordinates(evt.target.getLatLng());
+  });
   mainMarker.addTo(map);
   createMarkers(offers);
 };

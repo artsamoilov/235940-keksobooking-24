@@ -7,6 +7,7 @@ const type = adForm.querySelector('#type');
 const price = adForm.querySelector('#price');
 const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
+const address = adForm.querySelector('#address');
 
 const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
 
@@ -38,4 +39,6 @@ roomNumber.addEventListener('change', validateRooms);
 
 capacity.addEventListener('change', validateRooms);
 
-export {setFormEnabled};
+const addCoordinates = ({lat, lng}) => address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+
+export {addCoordinates, setFormEnabled};
