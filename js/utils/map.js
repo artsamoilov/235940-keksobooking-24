@@ -3,10 +3,7 @@ import {setEnabled} from './utils.js';
 
 const MAP_FILTER_DISABILITY_CLASS = 'map__filters--disabled';
 const mapFilter = document.querySelector('.map__filters');
-const map = L.map('map-canvas').setView({
-  lat: 35.68,
-  lng: 139.74,
-}, 13);
+const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
 
 const setFilterEnabled = (enabled) => setEnabled(mapFilter, enabled, MAP_FILTER_DISABILITY_CLASS);
@@ -34,6 +31,10 @@ const createMarkers = (offers) => {
 };
 
 const initializeMap = (offers) => {
+  map.setView({
+    lat: 35.68,
+    lng: 139.74,
+  }, 13);
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -55,11 +56,8 @@ const initializeMap = (offers) => {
       icon: mainMarkerIcon,
     },
   );
-  mainMarker.on('moveend', (evt) => {
-    console.log(evt.target.getLatLng());
-  });
   mainMarker.addTo(map);
   createMarkers(offers);
 };
 
-export {initializeMap, setFilterEnabled};
+export {map, initializeMap, setFilterEnabled};
