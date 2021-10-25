@@ -5,7 +5,7 @@ const addExistingTextContent = (node, text) => text ? node.textContent = text : 
 const addExistingSource = (node, source) => source ? node.src = source : node.classList.add('hidden');
 
 const createPopup = ({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}}) => {
-  const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
+  const cardTemplate = document.querySelector('#card').content.querySelector('.popup').cloneNode(true);
 
   addExistingSource(cardTemplate.querySelector('.popup__avatar'), avatar);
   addExistingTextContent(cardTemplate.querySelector('.popup__title'), title);
