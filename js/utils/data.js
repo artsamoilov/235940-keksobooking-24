@@ -1,5 +1,10 @@
 import {getFloatFromRange, getIntegerFromRange} from './utils.js';
 
+const TokyoCoordinates = {
+  LAT: 35.68216,
+  LNG: 139.74975,
+};
+
 const MinPrices = {
   BUNGALOW: 0,
   FLAT: 1000,
@@ -90,4 +95,4 @@ const createHousingOffers = (quantity) => {
   return Array.from({length: quantity}, createHousing);
 };
 
-export {HousingTypes, MinPrices, createHousingOffers};
+export {TokyoCoordinates, HousingTypes, MinPrices, createHousingOffers};

@@ -1,15 +1,21 @@
 import {createHousingOffers} from './utils/data.js';
-import {renderPopup, setFilterEnabled} from './utils/map.js';
+import {map, initializeMap, setFilterEnabled} from './utils/map.js';
 import {setFormEnabled} from './utils/form.js';
 
 const HOUSING_QUANTITY = 10;
 const housingOffers = createHousingOffers(HOUSING_QUANTITY);
-
-renderPopup(housingOffers[0]);
 
 const setPageEnabled = (enabled) => {
   setFilterEnabled(enabled);
   setFormEnabled(enabled);
 };
 
-setPageEnabled(true);
+const renderMap = (offers) => {
+  setPageEnabled(false);
+  map.on('load', () => {
+    setPageEnabled(true);
+  });
+  initializeMap(offers);
+};
+
+renderMap(housingOffers);
