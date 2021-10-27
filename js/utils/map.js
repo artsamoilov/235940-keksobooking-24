@@ -67,7 +67,7 @@ const initializeMap = (offers) => {
   createMarkers(offers);
 };
 
-const setPinInitialPosition = () => {
+const resetMap = () => {
   mainMarker.setLatLng({
     lat: TokyoCoordinates.LAT,
     lng: TokyoCoordinates.LNG,
@@ -80,4 +80,4 @@ const setPinInitialPosition = () => {
   addCoordinates(mainMarker.getLatLng());
 };
 
-export {map, initializeMap, setFilterEnabled, setPinInitialPosition};
+export {map, initializeMap, setFilterEnabled, resetMap};

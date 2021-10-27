@@ -1,7 +1,7 @@
 import {setEnabled} from './utils.js';
 import {MinPrices} from './data.js';
 import {sendData} from './api.js';
-import {setPinInitialPosition} from './map.js';
+import {resetMap} from './map.js';
 
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
 const adForm = document.querySelector('.ad-form');
@@ -10,6 +10,9 @@ const price = adForm.querySelector('#price');
 const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const address = adForm.querySelector('#address');
+const resetButton = adForm.querySelector('.ad-form__reset');
+
+resetButton.addEventListener('click', () => resetMap());
 
 const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
 
@@ -50,7 +53,7 @@ const setAdFormSubmit = (onSuccess, onError) => {
       () => {
         onSuccess();
         adForm.reset();
-        setPinInitialPosition();
+        resetMap();
       },
       () => onError(),
       new FormData(evt.target),
