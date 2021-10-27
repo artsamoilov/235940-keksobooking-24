@@ -1,5 +1,7 @@
 import {setEnabled} from './utils.js';
 import {MinPrices} from './data.js';
+import {sendData} from './api.js';
+import {setPinInitialPosition} from './map.js';
 
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
 const adForm = document.querySelector('.ad-form');
@@ -41,4 +43,19 @@ capacity.addEventListener('change', validateRooms);
 
 const addCoordinates = ({lat, lng}) => address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 
-export {addCoordinates, setFormEnabled};
+const setAdFormSubmit = (onSuccess, onError) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData(
+      () => {
+        onSuccess();
+        adForm.reset();
+        setPinInitialPosition();
+      },
+      () => onError(),
+      new FormData(evt.target),
+    );
+  });
+};
+
+export {setAdFormSubmit, addCoordinates, setFormEnabled};

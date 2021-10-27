@@ -6,6 +6,8 @@ const addExistingSource = (node, source) => source ? node.src = source : node.cl
 
 const createPopup = ({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}}) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.popup').cloneNode(true);
+  const popupFeaturesContainer = cardTemplate.querySelector('.popup__features');
+  const popupPhotosContainer = cardTemplate.querySelector('.popup__photos');
 
   addExistingSource(cardTemplate.querySelector('.popup__avatar'), avatar);
   addExistingTextContent(cardTemplate.querySelector('.popup__title'), title);
@@ -16,26 +18,30 @@ const createPopup = ({author: {avatar}, offer: {title, address, price, type, roo
   addExistingTextContent(cardTemplate.querySelector('.popup__text--time'), `Заезд после ${checkin}, выезд до ${checkout}`);
   addExistingTextContent(cardTemplate.querySelector('.popup__description'), description);
 
-  const popupFeaturesContainer = cardTemplate.querySelector('.popup__features');
-  const featuresList = popupFeaturesContainer.querySelectorAll('.popup__feature');
-  const featuresClasses = features.map((feature) => `popup__feature--${feature}`);
+  try {
+    const featuresList = popupFeaturesContainer.querySelectorAll('.popup__feature');
+    const featuresClasses = features.map((feature) => `popup__feature--${feature}`);
+    featuresList.forEach((featureItem) => {
+      const featureClass = featureItem.classList[1];
+      if (!featuresClasses.includes(featureClass)) {
+        featureItem.remove();
+      }
+    });
+  } catch (err) {
+    popupFeaturesContainer.classList.add('hidden');
+  }
 
-  featuresList.forEach((featureItem) => {
-    const featureClass = featureItem.classList[1];
-    if (!featuresClasses.includes(featureClass)) {
-      featureItem.remove();
-    }
-  });
-
-  const popupPhotosContainer = cardTemplate.querySelector('.popup__photos');
-  const photoTemplate = popupPhotosContainer.querySelector('.popup__photo');
-
-  photos.forEach((photoSource) => {
-    const photoElement = photoTemplate.cloneNode();
-    photoElement.src = photoSource;
-    popupPhotosContainer.append(photoElement);
-  });
-  photoTemplate.remove();
+  try {
+    const photoTemplate = popupPhotosContainer.querySelector('.popup__photo');
+    photos.forEach((photoSource) => {
+      const photoElement = photoTemplate.cloneNode();
+      photoElement.src = photoSource;
+      popupPhotosContainer.append(photoElement);
+    });
+    photoTemplate.remove();
+  } catch (err) {
+    popupPhotosContainer.remove();
+  }
 
   return cardTemplate;
 };

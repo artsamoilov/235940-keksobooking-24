@@ -1,9 +1,7 @@
-import {createHousingOffers} from './utils/data.js';
 import {map, initializeMap, setFilterEnabled} from './utils/map.js';
-import {setFormEnabled} from './utils/form.js';
-
-const HOUSING_QUANTITY = 10;
-const housingOffers = createHousingOffers(HOUSING_QUANTITY);
+import {setAdFormSubmit, setFormEnabled} from './utils/form.js';
+import {showSuccessModal, showErrorModal} from './utils/modal.js';
+import {getData} from './utils/api.js';
 
 const setPageEnabled = (enabled) => {
   setFilterEnabled(enabled);
@@ -18,4 +16,6 @@ const renderMap = (offers) => {
   initializeMap(offers);
 };
 
-renderMap(housingOffers);
+getData(renderMap);
+
+setAdFormSubmit(showSuccessModal, showErrorModal);
