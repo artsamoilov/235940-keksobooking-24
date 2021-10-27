@@ -76,6 +76,7 @@ const setPinInitialPosition = () => {
     lat: TokyoCoordinates.LAT,
     lng: TokyoCoordinates.LNG,
   }, INITIAL_ZOOM_LEVEL);
+  map.closePopup();
   addCoordinates(mainMarker.getLatLng());
 };
 
