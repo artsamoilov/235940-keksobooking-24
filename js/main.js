@@ -1,7 +1,7 @@
 import {map, initializeMap, setFilterEnabled} from './utils/map.js';
 import {setAdFormSubmit, setFormEnabled} from './utils/form.js';
-import {showSuccessModal, showErrorModal} from './utils/modal.js';
-import {getData} from './utils/api.js';
+import {showSuccessNotification, showErrorNotification} from './utils/notification.js';
+import {loadAdverts} from './utils/api.js';
 
 const setPageEnabled = (enabled) => {
   setFilterEnabled(enabled);
@@ -16,6 +16,6 @@ const renderMap = (offers) => {
   initializeMap(offers);
 };
 
-getData(renderMap);
+loadAdverts(renderMap);
 
-setAdFormSubmit(showSuccessModal, showErrorModal);
+setAdFormSubmit(showSuccessNotification, showErrorNotification);

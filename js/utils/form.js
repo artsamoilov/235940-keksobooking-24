@@ -1,6 +1,6 @@
 import {setEnabled} from './utils.js';
 import {MinPrices} from './data.js';
-import {sendData} from './api.js';
+import {sendAdvert} from './api.js';
 import {resetMap} from './map.js';
 
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
@@ -49,7 +49,7 @@ const addCoordinates = ({lat, lng}) => address.value = `${lat.toFixed(5)}, ${lng
 const setAdFormSubmit = (onSuccess, onError) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    sendData(
+    sendAdvert(
       () => {
         onSuccess();
         adForm.reset();

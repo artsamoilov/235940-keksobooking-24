@@ -1,10 +1,10 @@
-const getData = (onSuccess) => {
+const loadAdverts = (onSuccess) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((offers) => onSuccess(offers));
 };
 
-const sendData = (onSuccess, onError, body) => {
+const sendAdvert = (onSuccess, onError, body) => {
   fetch('https://24.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
@@ -19,4 +19,4 @@ const sendData = (onSuccess, onError, body) => {
   }).catch(() => onError());
 };
 
-export {getData, sendData};
+export {loadAdverts, sendAdvert};
