@@ -1,12 +1,14 @@
 import {isEscKey} from './utils.js';
 
-const MODAL_SHOW_TIME = 3000;
-const successNotificationTemplate = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-const errorNotificationTemplate = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-const modalContainer = document.createElement('div');
+const NOTIFICATION_SHOW_TIME = 3000;
 
 const hideNotification = () => {
-  modalContainer.remove();
+  if (document.querySelector('.success')) {
+    document.querySelector('.success').remove();
+  }
+  if (document.querySelector('.error')) {
+    document.querySelector('.error').remove();
+  }
   document.removeEventListener('keydown', isEscKey);
 };
 
@@ -17,17 +19,22 @@ const onDocumentEscKeydown = (evt) => {
   }
 };
 
-const showNotification = (modal) => {
-  modalContainer.append(modal);
-  document.body.append(modalContainer);
-  modal.addEventListener('click', hideNotification);
+const showNotification = (notificationTemplate) => {
+  document.body.append(notificationTemplate);
+  notificationTemplate.addEventListener('click', hideNotification);
   document.addEventListener('keydown', onDocumentEscKeydown);
 
-  setTimeout(hideNotification, MODAL_SHOW_TIME);
+  setTimeout(hideNotification, NOTIFICATION_SHOW_TIME);
 };
 
-const showSuccessNotification = () => showNotification(successNotificationTemplate);
+const showSuccessNotification = () => {
+  const successNotificationTemplate = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+  showNotification(successNotificationTemplate);
+};
 
-const showErrorNotification = () => showNotification(errorNotificationTemplate);
+const showErrorNotification = () => {
+  const errorNotificationTemplate = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  showNotification(errorNotificationTemplate);
+};
 
 export {showSuccessNotification, showErrorNotification};

@@ -12,14 +12,26 @@ const capacity = adForm.querySelector('#capacity');
 const address = adForm.querySelector('#address');
 const resetButton = adForm.querySelector('.ad-form__reset');
 
-resetButton.addEventListener('click', () => resetMap());
+const resetPrice = () => {
+  price.placeholder = MinPrices[type.value.toUpperCase()];
+  price.min = MinPrices[type.value.toUpperCase()];
+};
+
+const resetPage = () => {
+  adForm.reset();
+  resetMap();
+  resetPrice();
+};
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetPage();
+});
 
 const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
 
 type.addEventListener('change', () => {
-  const minPrice = MinPrices[type.value.toUpperCase()];
-  price.placeholder = minPrice;
-  price.min = minPrice;
+  resetPrice();
 });
 
 const validateRooms = () => {
@@ -52,8 +64,7 @@ const setAdFormSubmit = (onSuccess, onError) => {
     sendAdvert(
       () => {
         onSuccess();
-        adForm.reset();
-        resetMap();
+        resetPage();
       },
       onError,
       new FormData(evt.target),
