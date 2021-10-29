@@ -16,7 +16,7 @@ const sendAdvert = (onSuccess, onError, body) => {
     } else {
       throw new Error();
     }
-  }).catch(() => onError());
+  }).catch(onError);
 };
 
 export {loadAdverts, sendAdvert};

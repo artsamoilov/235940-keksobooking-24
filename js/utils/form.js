@@ -55,7 +55,7 @@ const setAdFormSubmit = (onSuccess, onError) => {
         adForm.reset();
         resetMap();
       },
-      () => onError(),
+      onError,
       new FormData(evt.target),
     );
   });

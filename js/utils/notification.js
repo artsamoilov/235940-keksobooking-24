@@ -20,18 +20,14 @@ const onDocumentEscKeydown = (evt) => {
 const showNotification = (modal) => {
   modalContainer.append(modal);
   document.body.append(modalContainer);
-  modal.addEventListener('click', () => hideNotification());
+  modal.addEventListener('click', hideNotification);
   document.addEventListener('keydown', onDocumentEscKeydown);
 
-  setTimeout(() => hideNotification(), MODAL_SHOW_TIME);
+  setTimeout(hideNotification, MODAL_SHOW_TIME);
 };
 
-const showSuccessNotification = () => {
-  showNotification(successNotificationTemplate);
-};
+const showSuccessNotification = () => showNotification(successNotificationTemplate);
 
-const showErrorNotification = () => {
-  showNotification(errorNotificationTemplate);
-};
+const showErrorNotification = () => showNotification(errorNotificationTemplate);
 
 export {showSuccessNotification, showErrorNotification};
