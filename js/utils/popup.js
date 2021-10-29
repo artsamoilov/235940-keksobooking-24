@@ -18,7 +18,7 @@ const createPopup = ({author: {avatar}, offer: {title, address, price, type, roo
   addExistingTextContent(cardTemplate.querySelector('.popup__text--time'), `Заезд после ${checkin}, выезд до ${checkout}`);
   addExistingTextContent(cardTemplate.querySelector('.popup__description'), description);
 
-  try {
+  if (features) {
     const featuresList = popupFeaturesContainer.querySelectorAll('.popup__feature');
     const featuresClasses = features.map((feature) => `popup__feature--${feature}`);
     featuresList.forEach((featureItem) => {
@@ -27,11 +27,11 @@ const createPopup = ({author: {avatar}, offer: {title, address, price, type, roo
         featureItem.remove();
       }
     });
-  } catch (err) {
+  } else {
     popupFeaturesContainer.classList.add('hidden');
   }
 
-  try {
+  if (photos) {
     const photoTemplate = popupPhotosContainer.querySelector('.popup__photo');
     photos.forEach((photoSource) => {
       const photoElement = photoTemplate.cloneNode();
@@ -39,7 +39,7 @@ const createPopup = ({author: {avatar}, offer: {title, address, price, type, roo
       popupPhotosContainer.append(photoElement);
     });
     photoTemplate.remove();
-  } catch (err) {
+  } else {
     popupPhotosContainer.remove();
   }
 
