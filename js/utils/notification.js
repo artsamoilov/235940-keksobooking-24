@@ -1,6 +1,6 @@
 import {isEscKey} from './utils.js';
 
-const NOTIFICATION_SHOW_TIME = 30000;
+const NOTIFICATION_SHOW_TIME = 3000;
 const successNotificationTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorNotificationTemplate = document.querySelector('#error').content.querySelector('.error');
 

@@ -1,5 +1,5 @@
-import {map, initializeMap, setFilterEnabled} from './utils/map.js';
-import {setAdFormSubmit, setFormEnabled} from './utils/form.js';
+import {map, initializeMap, setFilterEnabled, resetMap} from './utils/map.js';
+import {setAdFormSubmit, setFormEnabled, resetForm} from './utils/form.js';
 import {showSuccessNotification, showErrorNotification} from './utils/notification.js';
 import {loadAdverts} from './utils/api.js';
 
@@ -16,6 +16,14 @@ const renderMap = (offers) => {
   initializeMap(offers);
 };
 
+const onSuccess = () => {
+  showSuccessNotification();
+  resetMap();
+  resetForm();
+};
+
+const onError = () => showErrorNotification();
+
 loadAdverts(renderMap);
 
-setAdFormSubmit(showSuccessNotification, showErrorNotification);
+setAdFormSubmit(onSuccess, onError);

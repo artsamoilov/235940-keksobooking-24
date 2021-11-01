@@ -1,7 +1,6 @@
 import {setEnabled} from './utils.js';
-import {MinPrices} from './data.js';
+import {MinPrices, TokyoCoordinates} from './data.js';
 import {sendAdvert} from './api.js';
-import {resetMap} from './map.js';
 
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
 const adForm = document.querySelector('.ad-form');
@@ -12,26 +11,28 @@ const capacity = adForm.querySelector('#capacity');
 const address = adForm.querySelector('#address');
 const resetButton = adForm.querySelector('.ad-form__reset');
 
-const resetPrice = () => {
-  price.placeholder = MinPrices[type.value.toUpperCase()];
-  price.min = MinPrices[type.value.toUpperCase()];
+const addCoordinates = ({lat, lng}) => address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+
+const setPriceConstraint = (housingType) => {
+  price.placeholder = MinPrices[housingType.value.toUpperCase()];
+  price.min = MinPrices[housingType.value.toUpperCase()];
 };
 
-const resetPage = () => {
+const resetForm = () => {
   adForm.reset();
-  resetMap();
-  resetPrice();
+  addCoordinates({lat: TokyoCoordinates.LAT, lng: TokyoCoordinates.LNG});
+  setPriceConstraint(type);
 };
 
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
-  resetPage();
+  resetForm();
 });
 
 const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
 
 type.addEventListener('change', () => {
-  resetPrice();
+  setPriceConstraint(type);
 });
 
 const validateRooms = () => {
@@ -56,20 +57,11 @@ roomNumber.addEventListener('change', validateRooms);
 
 capacity.addEventListener('change', validateRooms);
 
-const addCoordinates = ({lat, lng}) => address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-
 const setAdFormSubmit = (onSuccess, onError) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    sendAdvert(
-      () => {
-        onSuccess();
-        resetPage();
-      },
-      onError,
-      new FormData(evt.target),
-    );
+    sendAdvert(onSuccess, onError, new FormData(evt.target));
   });
 };
 
-export {setAdFormSubmit, addCoordinates, setFormEnabled};
+export {setAdFormSubmit, addCoordinates, setFormEnabled, resetForm};
