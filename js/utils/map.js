@@ -68,6 +68,7 @@ const initializeMap = (offers) => {
 };
 
 const resetMap = () => {
+  mapFilter.reset();
   mainMarker.setLatLng({
     lat: TokyoCoordinates.LAT,
     lng: TokyoCoordinates.LNG,
@@ -80,4 +81,34 @@ const resetMap = () => {
   addCoordinates(mainMarker.getLatLng());
 };
 
-export {map, initializeMap, setFilterEnabled, resetMap};
+const updateMapMarkers = (offers) => {
+  markerGroup.clearLayers();
+  createMarkers(offers);
+};
+
+const getAdvertRank = ({offer: {features}}) => {
+  const checkedMapFeatures = mapFilter.querySelectorAll('.map__checkbox:checked');
+  let rank = 0;
+  if (features) {
+    checkedMapFeatures.forEach((checkedFeature) => {
+      if (features.some((feature) => feature === checkedFeature.value)) {
+        rank++;
+      }
+    });
+  }
+  return rank;
+};
+
+const checkMapFilter = (cb) => {
+  mapFilter.addEventListener('change', () => {
+    cb();
+  });
+};
+
+const compareAdverts = (advert1, advert2) => {
+  const rank1 = getAdvertRank(advert1);
+  const rank2 = getAdvertRank(advert2);
+  return rank2 - rank1;
+};
+
+export {map, initializeMap, setFilterEnabled, resetMap, compareAdverts, checkMapFilter, updateMapMarkers};

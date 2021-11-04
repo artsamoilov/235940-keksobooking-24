@@ -1,6 +1,7 @@
 import {setEnabled} from './utils.js';
 import {MinPrices, TokyoCoordinates} from './data.js';
 import {sendAdvert} from './api.js';
+import {resetMap} from './map.js';
 
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
 const adForm = document.querySelector('.ad-form');
@@ -27,6 +28,7 @@ const resetForm = () => {
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetForm();
+  resetMap();
 });
 
 const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
