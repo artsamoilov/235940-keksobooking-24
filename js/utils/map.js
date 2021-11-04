@@ -81,11 +81,6 @@ const resetMap = () => {
   addCoordinates(mainMarker.getLatLng());
 };
 
-const updateMapMarkers = (offers) => {
-  markerGroup.clearLayers();
-  createMarkers(offers);
-};
-
 const getAdvertRank = ({offer: {features}}) => {
   const checkedMapFeatures = mapFilter.querySelectorAll('.map__checkbox:checked');
   let rank = 0;
@@ -99,10 +94,48 @@ const getAdvertRank = ({offer: {features}}) => {
   return rank;
 };
 
+const filterAdverts = ({offer: {type, price, rooms, guests}}) => {
+  const housingType = mapFilter.querySelector('#housing-type').value;
+  const housingPrice = mapFilter.querySelector('#housing-price').value;
+  const housingRooms = mapFilter.querySelector('#housing-rooms').value;
+  const housingGuests = mapFilter.querySelector('#housing-guests').value;
+  let isTypeMatches = true;
+  let isPriceMatches = true;
+  let isRoomsMatches = true;
+  let isGuestsMatches = true;
+
+  if (housingType !== 'any') {
+    isTypeMatches = (type === housingType);
+  }
+  if (housingPrice !== 'any') {
+    switch (housingPrice) {
+      case 'low':
+        isPriceMatches = (price < 10000);
+        break;
+      case 'middle':
+        isPriceMatches = ((price >= 10000) && (price < 50000));
+        break;
+      case 'high':
+        isPriceMatches = (price >= 50000);
+        break;
+    }
+  }
+  if (housingRooms !== 'any') {
+    isRoomsMatches = (rooms === housingRooms);
+  }
+  if (housingGuests !== 'any') {
+    isGuestsMatches = (guests === housingGuests);
+  }
+  return (isTypeMatches && isPriceMatches && isRoomsMatches && isGuestsMatches);
+};
+
+const updateMapMarkers = (adverts) => {
+  markerGroup.clearLayers();
+  createMarkers(adverts);
+};
+
 const checkMapFilter = (cb) => {
-  mapFilter.addEventListener('change', () => {
-    cb();
-  });
+  mapFilter.addEventListener('change', cb);
 };
 
 const compareAdverts = (advert1, advert2) => {
@@ -111,4 +144,4 @@ const compareAdverts = (advert1, advert2) => {
   return rank2 - rank1;
 };
 
-export {map, initializeMap, setFilterEnabled, resetMap, compareAdverts, checkMapFilter, updateMapMarkers};
+export {map, initializeMap, setFilterEnabled, resetMap, compareAdverts, checkMapFilter, updateMapMarkers, filterAdverts};

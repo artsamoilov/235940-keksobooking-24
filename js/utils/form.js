@@ -1,7 +1,7 @@
 import {setEnabled} from './utils.js';
 import {MinPrices, TokyoCoordinates} from './data.js';
 import {sendAdvert} from './api.js';
-import {resetMap} from './map.js';
+import {resetMap, updateMapMarkers} from './map.js';
 
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
 const adForm = document.querySelector('.ad-form');
@@ -25,11 +25,11 @@ const resetForm = () => {
   setPriceConstraint(type);
 };
 
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetForm();
-  resetMap();
-});
+// resetButton.addEventListener('click', (evt) => {
+//   evt.preventDefault();
+//   resetForm();
+//   resetMap();
+// });
 
 const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
 
@@ -59,11 +59,21 @@ roomNumber.addEventListener('change', validateRooms);
 
 capacity.addEventListener('change', validateRooms);
 
-const setAdFormSubmit = (onSuccess, onError) => {
+const setAdFormSubmit = (onSuccess, onError, adverts) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     sendAdvert(onSuccess, onError, new FormData(evt.target));
+    updateMapMarkers(adverts);
   });
 };
 
-export {setAdFormSubmit, addCoordinates, setFormEnabled, resetForm};
+const setAdFormReset = (adverts) => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
+    resetMap();
+    updateMapMarkers(adverts);
+  });
+};
+
+export {setAdFormSubmit, addCoordinates, setFormEnabled, resetForm, setAdFormReset};
