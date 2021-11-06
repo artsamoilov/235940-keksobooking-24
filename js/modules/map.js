@@ -1,11 +1,16 @@
 import {createPopup} from './popup.js';
 import {setEnabled} from './utils.js';
 import {addCoordinates} from './form.js';
-import {TokyoCoordinates} from './data.js';
+import {TokyoCoordinates} from './utils.js';
 
 const MAP_FILTER_DISABILITY_CLASS = 'map__filters--disabled';
 const INITIAL_ZOOM_LEVEL = 13;
+
 const mapFilter = document.querySelector('.map__filters');
+const housingType = mapFilter.querySelector('#housing-type');
+const housingPrice = mapFilter.querySelector('#housing-price');
+const housingRooms = mapFilter.querySelector('#housing-rooms');
+const housingGuests = mapFilter.querySelector('#housing-guests');
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
 const mainMarkerIcon = L.icon({
@@ -48,6 +53,8 @@ const createMarkers = (offers) => {
   });
 };
 
+const onMainMarkerMove = ({lat, lng}) => addCoordinates({lat, lng});
+
 const initializeMap = (offers) => {
   map.setView({
     lat: TokyoCoordinates.LAT,
@@ -60,9 +67,7 @@ const initializeMap = (offers) => {
     },
   ).addTo(map);
   addCoordinates(mainMarker.getLatLng());
-  mainMarker.on('moveend', (evt) => {
-    addCoordinates(evt.target.getLatLng());
-  });
+  mainMarker.addEventListener('moveend', (evt) => onMainMarkerMove(evt.target.getLatLng()));
   mainMarker.addTo(map);
   createMarkers(offers);
 };
@@ -94,40 +99,29 @@ const getAdvertRank = ({offer: {features}}) => {
   return rank;
 };
 
-const filterAdverts = ({offer: {type, price, rooms, guests}}) => {
-  const housingType = mapFilter.querySelector('#housing-type').value;
-  const housingPrice = mapFilter.querySelector('#housing-price').value;
-  const housingRooms = mapFilter.querySelector('#housing-rooms').value;
-  const housingGuests = mapFilter.querySelector('#housing-guests').value;
-  let isTypeMatches = true;
-  let isPriceMatches = true;
-  let isRoomsMatches = true;
-  let isGuestsMatches = true;
+const isAnySelected = (selectedValue) => selectedValue === 'any';
 
-  if (housingType !== 'any') {
-    isTypeMatches = (type === housingType);
-  }
-  if (housingPrice !== 'any') {
-    switch (housingPrice) {
+const isTypeMatches = (type) => isAnySelected(housingType.value) || type === housingType.value;
+
+const isPriceMatches = (price) => {
+  if (!isAnySelected(housingPrice.value)) {
+    switch (housingPrice.value) {
       case 'low':
-        isPriceMatches = (price < 10000);
-        break;
+        return price < 10000;
       case 'middle':
-        isPriceMatches = ((price >= 10000) && (price < 50000));
-        break;
+        return (price >= 10000) && (price < 50000);
       case 'high':
-        isPriceMatches = (price >= 50000);
-        break;
+        return price >= 50000;
     }
   }
-  if (housingRooms !== 'any') {
-    isRoomsMatches = (rooms === housingRooms);
-  }
-  if (housingGuests !== 'any') {
-    isGuestsMatches = (guests === housingGuests);
-  }
-  return (isTypeMatches && isPriceMatches && isRoomsMatches && isGuestsMatches);
+  return true;
 };
+
+const isRoomsNumberMatches = (rooms) => isAnySelected(housingRooms.value) || rooms === housingRooms.value;
+
+const isGuestsNumberMatches = (guests) => isAnySelected(housingGuests.value) || guests === housingGuests.value;
+
+const filterAdverts = ({offer: {type, price, rooms, guests}}) => isTypeMatches(type) && isPriceMatches(price) && isRoomsNumberMatches(rooms) && isGuestsNumberMatches(guests);
 
 const updateMapMarkers = (adverts) => {
   markerGroup.clearLayers();

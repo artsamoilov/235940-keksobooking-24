@@ -1,8 +1,8 @@
-import {map, initializeMap, setFilterEnabled, resetMap, compareAdverts, checkMapFilter, updateMapMarkers, filterAdverts} from './utils/map.js';
-import {setAdFormSubmit, setFormEnabled, resetForm, setAdFormReset} from './utils/form.js';
-import {showSuccessNotification, showErrorNotification} from './utils/notification.js';
-import {loadAdverts} from './utils/api.js';
-import {debounce} from './utils/debounce.js';
+import {map, initializeMap, setFilterEnabled, resetMap, compareAdverts, checkMapFilter, updateMapMarkers, filterAdverts} from './modules/map.js';
+import {setFormEnabled, resetForm, setAdFormActions} from './modules/form.js';
+import {showSuccessNotification, showErrorNotification} from './modules/notification.js';
+import {loadAdverts} from './modules/api.js';
+import {debounce} from './modules/debounce.js';
 
 const MAX_OFFERS_COUNT = 10;
 const RENDERER_DELAY = 500;
@@ -20,27 +20,24 @@ const onSuccess = () => {
 
 const onError = () => showErrorNotification();
 
+const onMapLoad = (adverts) => {
+  setPageEnabled(true);
+  checkMapFilter(debounce(() => {updateMapMarkers(adverts
+    .slice()
+    .filter(filterAdverts)
+    .sort(compareAdverts)
+    .slice(0, MAX_OFFERS_COUNT));
+  }, RENDERER_DELAY));
+  setAdFormActions(onSuccess, onError, adverts
+    .slice()
+    .sort(compareAdverts)
+    .slice(0, MAX_OFFERS_COUNT));
+};
+
 const renderMap = (adverts) => {
   setPageEnabled(false);
-  map.on('load', () => {
-    setPageEnabled(true);
-  });
+  map.addEventListener('load', () => onMapLoad(adverts));
   initializeMap(adverts.slice(0, MAX_OFFERS_COUNT));
-  checkMapFilter(debounce(
-    () => {updateMapMarkers(adverts
-      .slice()
-      .filter(filterAdverts)
-      .sort(compareAdverts)
-      .slice(0, MAX_OFFERS_COUNT));
-    }, RENDERER_DELAY));
-  setAdFormReset(adverts
-    .slice()
-    .sort(compareAdverts)
-    .slice(0, MAX_OFFERS_COUNT));
-  setAdFormSubmit(onSuccess, onError, adverts
-    .slice()
-    .sort(compareAdverts)
-    .slice(0, MAX_OFFERS_COUNT));
 };
 
 loadAdverts(renderMap);

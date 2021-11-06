@@ -1,9 +1,17 @@
 import {setEnabled} from './utils.js';
-import {MinPrices, TokyoCoordinates} from './data.js';
+import {TokyoCoordinates} from './utils.js';
 import {sendAdvert} from './api.js';
 import {resetMap, updateMapMarkers} from './map.js';
 
+const MinPrices = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
+};
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
+
 const adForm = document.querySelector('.ad-form');
 const type = adForm.querySelector('#type');
 const price = adForm.querySelector('#price');
@@ -25,17 +33,7 @@ const resetForm = () => {
   setPriceConstraint(type);
 };
 
-// resetButton.addEventListener('click', (evt) => {
-//   evt.preventDefault();
-//   resetForm();
-//   resetMap();
-// });
-
 const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
-
-type.addEventListener('change', () => {
-  setPriceConstraint(type);
-});
 
 const validateRooms = () => {
   const roomNumberValue = Number(roomNumber.value);
@@ -55,9 +53,15 @@ const validateRooms = () => {
   capacity.reportValidity();
 };
 
-roomNumber.addEventListener('change', validateRooms);
+const onRoomCapacityChange = () => validateRooms();
 
-capacity.addEventListener('change', validateRooms);
+const onHousingTypeChange = () => setPriceConstraint(type);
+
+type.addEventListener('change', onHousingTypeChange);
+
+roomNumber.addEventListener('change', onRoomCapacityChange);
+
+capacity.addEventListener('change', onRoomCapacityChange);
 
 const setAdFormSubmit = (onSuccess, onError, adverts) => {
   adForm.addEventListener('submit', (evt) => {
@@ -76,4 +80,9 @@ const setAdFormReset = (adverts) => {
   });
 };
 
-export {setAdFormSubmit, addCoordinates, setFormEnabled, resetForm, setAdFormReset};
+const setAdFormActions = (onSuccess, onError, adverts) => {
+  setAdFormReset(adverts);
+  setAdFormSubmit(onSuccess, onError, adverts);
+};
+
+export {addCoordinates, setFormEnabled, resetForm, setAdFormActions};
