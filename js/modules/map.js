@@ -86,19 +86,6 @@ const resetMap = () => {
   addCoordinates(mainMarker.getLatLng());
 };
 
-const getAdvertRank = ({offer: {features}}) => {
-  const checkedMapFeatures = mapFilter.querySelectorAll('.map__checkbox:checked');
-  let rank = 0;
-  if (features) {
-    checkedMapFeatures.forEach((checkedFeature) => {
-      if (features.some((feature) => feature === checkedFeature.value)) {
-        rank++;
-      }
-    });
-  }
-  return rank;
-};
-
 const isAnySelected = (selectedValue) => selectedValue === 'any';
 
 const isTypeMatches = (type) => isAnySelected(housingType.value) || type === housingType.value;
@@ -121,21 +108,26 @@ const isRoomsNumberMatches = (rooms) => isAnySelected(housingRooms.value) || roo
 
 const isGuestsNumberMatches = (guests) => isAnySelected(housingGuests.value) || guests === housingGuests.value;
 
-const filterAdverts = ({offer: {type, price, rooms, guests}}) => isTypeMatches(type) && isPriceMatches(price) && isRoomsNumberMatches(rooms) && isGuestsNumberMatches(guests);
+const isFeaturesListMatches = (features) => {
+  if (features) {
+    const checkedMapFeatures = mapFilter.querySelectorAll('.map__checkbox:checked');
+    const checkedFeaturesValues = [];
+    checkedMapFeatures.forEach((checkedFeature) => checkedFeaturesValues.push(checkedFeature.value));
+    return checkedFeaturesValues.every((checkedValue) => features.includes(checkedValue));
+  }
+  return false;
+};
+
+const filterAdverts = ({offer: {type, price, rooms, guests, features}}) =>
+  isTypeMatches(type) && isPriceMatches(price) && isRoomsNumberMatches(rooms) && isGuestsNumberMatches(guests) && isFeaturesListMatches(features);
 
 const updateMapMarkers = (adverts) => {
   markerGroup.clearLayers();
   createMarkers(adverts);
 };
 
-const checkMapFilter = (cb) => {
-  mapFilter.addEventListener('change', cb);
+const checkMapFilter = (onMapFilterChange) => {
+  mapFilter.addEventListener('change', onMapFilterChange);
 };
 
-const compareAdverts = (advert1, advert2) => {
-  const rank1 = getAdvertRank(advert1);
-  const rank2 = getAdvertRank(advert2);
-  return rank2 - rank1;
-};
-
-export {map, initializeMap, setFilterEnabled, resetMap, compareAdverts, checkMapFilter, updateMapMarkers, filterAdverts};
+export {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterAdverts};

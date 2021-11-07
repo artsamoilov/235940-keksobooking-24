@@ -1,4 +1,4 @@
-import {map, initializeMap, setFilterEnabled, resetMap, compareAdverts, checkMapFilter, updateMapMarkers, filterAdverts} from './modules/map.js';
+import {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterAdverts} from './modules/map.js';
 import {setFormEnabled, resetForm, setAdFormActions} from './modules/form.js';
 import {showSuccessNotification, showErrorNotification} from './modules/notification.js';
 import {loadAdverts} from './modules/api.js';
@@ -25,12 +25,10 @@ const onMapLoad = (adverts) => {
   checkMapFilter(debounce(() => {updateMapMarkers(adverts
     .slice()
     .filter(filterAdverts)
-    .sort(compareAdverts)
     .slice(0, MAX_OFFERS_COUNT));
   }, RENDERER_DELAY));
   setAdFormActions(onSuccess, onError, adverts
     .slice()
-    .sort(compareAdverts)
     .slice(0, MAX_OFFERS_COUNT));
 };
 
