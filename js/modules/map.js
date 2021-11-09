@@ -121,6 +121,19 @@ const isFeaturesListMatches = (features) => {
 const filterAdverts = ({offer: {type, price, rooms, guests, features}}) =>
   isTypeMatches(type) && isPriceMatches(price) && isRoomsNumberMatches(rooms) && isGuestsNumberMatches(guests) && isFeaturesListMatches(features);
 
+const filterMaxNumberOfAdverts = (adverts, maxCount) => {
+  const filteredAdverts = [];
+  for (const advert of adverts) {
+    if (filteredAdverts.length === maxCount) {
+      break;
+    }
+    if (filterAdverts(advert)) {
+      filteredAdverts.push(advert);
+    }
+  }
+  return filteredAdverts;
+};
+
 const updateMapMarkers = (adverts) => {
   markerGroup.clearLayers();
   createMarkers(adverts);
@@ -130,4 +143,4 @@ const checkMapFilter = (onMapFilterChange) => {
   mapFilter.addEventListener('change', onMapFilterChange);
 };
 
-export {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterAdverts};
+export {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts};

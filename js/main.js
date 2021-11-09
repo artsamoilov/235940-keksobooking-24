@@ -1,4 +1,4 @@
-import {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterAdverts} from './modules/map.js';
+import {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts} from './modules/map.js';
 import {setFormEnabled, resetForm, setAdFormActions} from './modules/form.js';
 import {showSuccessNotification, showErrorNotification} from './modules/notification.js';
 import {loadAdverts} from './modules/api.js';
@@ -22,19 +22,15 @@ const onError = () => showErrorNotification();
 
 const onMapLoad = (adverts) => {
   setPageEnabled(true);
-  checkMapFilter(debounce(() => {updateMapMarkers(adverts
-    .slice()
-    .filter(filterAdverts)
-    .slice(0, MAX_OFFERS_COUNT));
+  checkMapFilter(debounce(() => {
+    updateMapMarkers(filterMaxNumberOfAdverts(adverts, MAX_OFFERS_COUNT));
   }, RENDERER_DELAY));
-  setAdFormActions(onSuccess, onError, adverts
-    .slice()
-    .slice(0, MAX_OFFERS_COUNT));
+  setAdFormActions(onSuccess, onError, adverts.slice(0, MAX_OFFERS_COUNT));
 };
 
 const renderMap = (adverts) => {
   setPageEnabled(false);
-  map.addEventListener('load', () => onMapLoad(adverts));
+  map.addEventListener('load', () => onMapLoad(adverts)); // TODO: добавить загрузку объявлений по событию
   initializeMap(adverts.slice(0, MAX_OFFERS_COUNT));
 };
 
