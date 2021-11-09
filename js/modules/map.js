@@ -55,7 +55,7 @@ const createMarkers = (offers) => {
 
 const onMainMarkerMove = ({lat, lng}) => addCoordinates({lat, lng});
 
-const initializeMap = (offers) => {
+const initializeMap = () => {
   map.setView({
     lat: TokyoCoordinates.LAT,
     lng: TokyoCoordinates.LNG,
@@ -69,7 +69,6 @@ const initializeMap = (offers) => {
   addCoordinates(mainMarker.getLatLng());
   mainMarker.addEventListener('moveend', (evt) => onMainMarkerMove(evt.target.getLatLng()));
   mainMarker.addTo(map);
-  createMarkers(offers);
 };
 
 const resetMap = () => {
@@ -143,4 +142,4 @@ const checkMapFilter = (onMapFilterChange) => {
   mapFilter.addEventListener('change', onMapFilterChange);
 };
 
-export {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts};
+export {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts, createMarkers};
