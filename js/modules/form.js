@@ -18,6 +18,7 @@ const price = adForm.querySelector('#price');
 const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const address = adForm.querySelector('#address');
+const time = adForm.querySelector('.ad-form__element--time');
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
 const resetButton = adForm.querySelector('.ad-form__reset');
@@ -59,13 +60,9 @@ const onRoomCapacityChange = () => validateRooms();
 
 const onHousingTypeChange = () => setPriceConstraint(type);
 
-const onTimeInChange = () => timeOut.value = timeIn.value;
+const onTimeChange = (evt) => evt.target === timeOut ? timeIn.value = evt.target.value : timeOut.value = evt.target.value;
 
-const onTimeOutChange = () => timeIn.value = timeOut.value;
-
-timeIn.addEventListener('change', onTimeInChange);
-
-timeOut.addEventListener('change', onTimeOutChange);
+time.addEventListener('change', onTimeChange);
 
 type.addEventListener('change', onHousingTypeChange);
 
