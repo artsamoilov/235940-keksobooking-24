@@ -6,11 +6,11 @@ import {TokyoCoordinates} from './utils.js';
 const MAP_FILTER_DISABILITY_CLASS = 'map__filters--disabled';
 const INITIAL_ZOOM_LEVEL = 13;
 
-const mapFilter = document.querySelector('.map__filters');
-const housingType = mapFilter.querySelector('#housing-type');
-const housingPrice = mapFilter.querySelector('#housing-price');
-const housingRooms = mapFilter.querySelector('#housing-rooms');
-const housingGuests = mapFilter.querySelector('#housing-guests');
+const mapFilterNode = document.querySelector('.map__filters');
+const housingTypeNode = mapFilterNode.querySelector('#housing-type');
+const housingPriceNode = mapFilterNode.querySelector('#housing-price');
+const housingRoomsNode = mapFilterNode.querySelector('#housing-rooms');
+const housingGuestsNode = mapFilterNode.querySelector('#housing-guests');
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
 const mainMarkerIcon = L.icon({
@@ -29,7 +29,7 @@ const mainMarker = L.marker(
   },
 );
 
-const setFilterEnabled = (enabled) => setEnabled(mapFilter, enabled, MAP_FILTER_DISABILITY_CLASS);
+const setFilterEnabled = (enabled) => setEnabled(mapFilterNode, enabled, MAP_FILTER_DISABILITY_CLASS);
 
 const createOfferMarker = (offer) => {
   const markerIcon = L.icon({
@@ -72,7 +72,7 @@ const initializeMap = () => {
 };
 
 const resetMap = () => {
-  mapFilter.reset();
+  mapFilterNode.reset();
   mainMarker.setLatLng({
     lat: TokyoCoordinates.LAT,
     lng: TokyoCoordinates.LNG,
@@ -87,11 +87,11 @@ const resetMap = () => {
 
 const isAnySelected = (selectedValue) => selectedValue === 'any';
 
-const isTypeMatches = (type) => isAnySelected(housingType.value) || type === housingType.value;
+const isTypeMatches = (type) => isAnySelected(housingTypeNode.value) || type === housingTypeNode.value;
 
 const isPriceMatches = (price) => {
-  if (!isAnySelected(housingPrice.value)) {
-    switch (housingPrice.value) {
+  if (!isAnySelected(housingPriceNode.value)) {
+    switch (housingPriceNode.value) {
       case 'low':
         return price < 10000;
       case 'middle':
@@ -103,15 +103,15 @@ const isPriceMatches = (price) => {
   return true;
 };
 
-const isRoomsNumberMatches = (rooms) => isAnySelected(housingRooms.value) || rooms === housingRooms.value;
+const isRoomsNumberMatches = (rooms) => isAnySelected(housingRoomsNode.value) || rooms === housingRoomsNode.value;
 
-const isGuestsNumberMatches = (guests) => isAnySelected(housingGuests.value) || guests === housingGuests.value;
+const isGuestsNumberMatches = (guests) => isAnySelected(housingGuestsNode.value) || guests === housingGuestsNode.value;
 
 const isFeaturesListMatches = (features) => {
   if (features) {
-    const checkedMapFeatures = mapFilter.querySelectorAll('.map__checkbox:checked');
+    const checkedFeaturesNodes = mapFilterNode.querySelectorAll('.map__checkbox:checked');
     const checkedFeaturesValues = [];
-    checkedMapFeatures.forEach((checkedFeature) => checkedFeaturesValues.push(checkedFeature.value));
+    checkedFeaturesNodes.forEach((checkedFeaturesNode) => checkedFeaturesValues.push(checkedFeaturesNode.value));
     return checkedFeaturesValues.every((checkedValue) => features.includes(checkedValue));
   }
   return false;
@@ -139,7 +139,7 @@ const updateMapMarkers = (adverts) => {
 };
 
 const checkMapFilter = (onMapFilterChange) => {
-  mapFilter.addEventListener('change', onMapFilterChange);
+  mapFilterNode.addEventListener('change', onMapFilterChange);
 };
 
 export {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts, createMarkers};

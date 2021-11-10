@@ -11,45 +11,45 @@ const addExistingTextContent = (node, text) => text ? node.textContent = text : 
 const addExistingSource = (node, source) => source ? node.src = source : node.classList.add('hidden');
 
 const createPopup = ({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}}) => {
-  const cardTemplate = document.querySelector('#card').content.querySelector('.popup').cloneNode(true);
-  const popupFeaturesContainer = cardTemplate.querySelector('.popup__features');
-  const popupPhotosContainer = cardTemplate.querySelector('.popup__photos');
+  const cardTemplateNode = document.querySelector('#card').content.querySelector('.popup').cloneNode(true);
+  const popupFeaturesContainerNode = cardTemplateNode.querySelector('.popup__features');
+  const popupPhotosContainerNode = cardTemplateNode.querySelector('.popup__photos');
 
-  addExistingSource(cardTemplate.querySelector('.popup__avatar'), avatar);
-  addExistingTextContent(cardTemplate.querySelector('.popup__title'), title);
-  addExistingTextContent(cardTemplate.querySelector('.popup__text--address'), address);
-  addExistingTextContent(cardTemplate.querySelector('.popup__text--price'), `${price} ₽/ночь`);
-  addExistingTextContent(cardTemplate.querySelector('.popup__type'), HousingTypes[type]);
-  addExistingTextContent(cardTemplate.querySelector('.popup__text--capacity'), `${rooms} комнаты для ${guests} гостей`);
-  addExistingTextContent(cardTemplate.querySelector('.popup__text--time'), `Заезд после ${checkin}, выезд до ${checkout}`);
-  addExistingTextContent(cardTemplate.querySelector('.popup__description'), description);
+  addExistingSource(cardTemplateNode.querySelector('.popup__avatar'), avatar);
+  addExistingTextContent(cardTemplateNode.querySelector('.popup__title'), title);
+  addExistingTextContent(cardTemplateNode.querySelector('.popup__text--address'), address);
+  addExistingTextContent(cardTemplateNode.querySelector('.popup__text--price'), `${price} ₽/ночь`);
+  addExistingTextContent(cardTemplateNode.querySelector('.popup__type'), HousingTypes[type]);
+  addExistingTextContent(cardTemplateNode.querySelector('.popup__text--capacity'), `${rooms} комнаты для ${guests} гостей`);
+  addExistingTextContent(cardTemplateNode.querySelector('.popup__text--time'), `Заезд после ${checkin}, выезд до ${checkout}`);
+  addExistingTextContent(cardTemplateNode.querySelector('.popup__description'), description);
 
   if (features) {
-    const featuresList = popupFeaturesContainer.querySelectorAll('.popup__feature');
+    const featuresNodes = popupFeaturesContainerNode.querySelectorAll('.popup__feature');
     const featuresClasses = features.map((feature) => `popup__feature--${feature}`);
-    featuresList.forEach((featureItem) => {
-      const featureClass = featureItem.classList[1];
+    featuresNodes.forEach((featureNode) => {
+      const featureClass = featureNode.classList[1];
       if (!featuresClasses.includes(featureClass)) {
-        featureItem.remove();
+        featureNode.remove();
       }
     });
   } else {
-    popupFeaturesContainer.classList.add('hidden');
+    popupFeaturesContainerNode.classList.add('hidden');
   }
 
   if (photos) {
-    const photoTemplate = popupPhotosContainer.querySelector('.popup__photo');
+    const photoTemplateNode = popupPhotosContainerNode.querySelector('.popup__photo');
     photos.forEach((photoSource) => {
-      const photoElement = photoTemplate.cloneNode();
-      photoElement.src = photoSource;
-      popupPhotosContainer.append(photoElement);
+      const photoNode = photoTemplateNode.cloneNode();
+      photoNode.src = photoSource;
+      popupPhotosContainerNode.append(photoNode);
     });
-    photoTemplate.remove();
+    photoTemplateNode.remove();
   } else {
-    popupPhotosContainer.remove();
+    popupPhotosContainerNode.remove();
   }
 
-  return cardTemplate;
+  return cardTemplateNode;
 };
 
 export {createPopup};
