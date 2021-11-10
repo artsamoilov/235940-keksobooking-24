@@ -1,4 +1,10 @@
-import {HousingTypes} from './data.js';
+const HousingTypes = {
+  BUNGALOW: 'Бунгало',
+  FLAT: 'Квартира',
+  HOTEL: 'Отель',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
+};
 
 const addExistingTextContent = (node, text) => text ? node.textContent = text : node.classList.add('hidden');
 
