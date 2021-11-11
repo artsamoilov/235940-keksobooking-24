@@ -11,6 +11,7 @@ const MinPrices = {
   PALACE: 10000,
 };
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
+const PHOTO_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const adFormNode = document.querySelector('.ad-form');
 const typeNode = adFormNode.querySelector('#type');
@@ -22,6 +23,58 @@ const timeNode = adFormNode.querySelector('.ad-form__element--time');
 const timeInNode = adFormNode.querySelector('#timein');
 const timeOutNode = adFormNode.querySelector('#timeout');
 const resetButtonNode = adFormNode.querySelector('.ad-form__reset');
+const photoListContainerNode = adFormNode.querySelector('.ad-form__photo-container');
+const photoFileChooserNode = photoListContainerNode.querySelector('#images');
+const photoContainerTemplateNode = photoListContainerNode.querySelector('.ad-form__photo');
+const avatarFileChooserNode = adFormNode.querySelector('#avatar');
+const avatarPreviewContainerNode = adFormNode.querySelector('.ad-form-header__preview');
+const avatarPreviewNode = avatarPreviewContainerNode.querySelector('img');
+const defaultAvatarURL = avatarPreviewNode.src;
+
+const isFileTypeMatches = (file) => {
+  const fileName = file.name.toLowerCase();
+  return PHOTO_FILE_TYPES.some((extension) => fileName.endsWith(extension));
+};
+
+const setDefaultAvatarPreview = () => avatarPreviewNode.src = defaultAvatarURL;
+
+avatarFileChooserNode.addEventListener('change', () => {
+  const file = avatarFileChooserNode.files[0];
+  avatarPreviewNode.src = isFileTypeMatches(file) ? URL.createObjectURL(file) : defaultAvatarURL;
+});
+
+const isPhotoContainerEmpty = () => photoListContainerNode.querySelectorAll('.ad-form__photo').length === 0;
+
+const removePhotoPreview = () => {
+  const currentPhotoPreviewsNodes = photoListContainerNode.querySelectorAll('.ad-form__photo');
+  currentPhotoPreviewsNodes.forEach((currentPreviewNode) => currentPreviewNode.remove());
+};
+
+const setDefaultPhotoPreview = () => photoListContainerNode.appendChild(photoContainerTemplateNode);
+
+photoFileChooserNode.addEventListener('change', () => {
+  removePhotoPreview();
+  const files = photoFileChooserNode.files;
+  for (let i = 0; i < files.length; i++) {
+    if (isFileTypeMatches(files[i])) {
+      const photoContainerNode = photoContainerTemplateNode.cloneNode();
+      const photoNode = document.createElement('img');
+      photoNode.src = URL.createObjectURL(files[i]);
+      photoNode.alt = `Фото жилья ${photoListContainerNode.children.length}`;
+      photoContainerNode.appendChild(photoNode);
+      photoListContainerNode.appendChild(photoContainerNode);
+    }
+  }
+  if (isPhotoContainerEmpty()) {
+    setDefaultPhotoPreview();
+  }
+});
+
+const resetPreview = () => {
+  setDefaultAvatarPreview();
+  removePhotoPreview();
+  setDefaultPhotoPreview();
+};
 
 const addCoordinates = ({lat, lng}) => addressNode.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 
@@ -34,6 +87,7 @@ const resetForm = () => {
   adFormNode.reset();
   addCoordinates({lat: TokyoCoordinates.LAT, lng: TokyoCoordinates.LNG});
   setPriceConstraint(typeNode);
+  resetPreview();
 };
 
 const setFormEnabled = (enabled) => setEnabled(adFormNode, enabled, FORM_DISABILITY_CLASS);
