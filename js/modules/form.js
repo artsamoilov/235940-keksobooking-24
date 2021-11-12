@@ -11,67 +11,121 @@ const MinPrices = {
   PALACE: 10000,
 };
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
+const PHOTO_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const adForm = document.querySelector('.ad-form');
-const type = adForm.querySelector('#type');
-const price = adForm.querySelector('#price');
-const roomNumber = adForm.querySelector('#room_number');
-const capacity = adForm.querySelector('#capacity');
-const address = adForm.querySelector('#address');
-const time = adForm.querySelector('.ad-form__element--time');
-const timeIn = adForm.querySelector('#timein');
-const timeOut = adForm.querySelector('#timeout');
-const resetButton = adForm.querySelector('.ad-form__reset');
+const adFormNode = document.querySelector('.ad-form');
+const typeNode = adFormNode.querySelector('#type');
+const priceNode = adFormNode.querySelector('#price');
+const roomNumberNode = adFormNode.querySelector('#room_number');
+const capacityNode = adFormNode.querySelector('#capacity');
+const addressNode = adFormNode.querySelector('#address');
+const timeNode = adFormNode.querySelector('.ad-form__element--time');
+const timeInNode = adFormNode.querySelector('#timein');
+const timeOutNode = adFormNode.querySelector('#timeout');
+const resetButtonNode = adFormNode.querySelector('.ad-form__reset');
+const photoListContainerNode = adFormNode.querySelector('.ad-form__photo-container');
+const photoFileChooserNode = photoListContainerNode.querySelector('#images');
+const photoContainerTemplateNode = photoListContainerNode.querySelector('.ad-form__photo');
+const avatarFileChooserNode = adFormNode.querySelector('#avatar');
+const avatarPreviewContainerNode = adFormNode.querySelector('.ad-form-header__preview');
+const avatarPreviewNode = avatarPreviewContainerNode.querySelector('img');
+const defaultAvatarURL = avatarPreviewNode.src;
 
-const addCoordinates = ({lat, lng}) => address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+const isFileTypeMatches = (file) => {
+  const fileName = file.name.toLowerCase();
+  return PHOTO_FILE_TYPES.some((extension) => fileName.endsWith(extension));
+};
 
-const setPriceConstraint = (housingType) => {
-  price.placeholder = MinPrices[housingType.value.toUpperCase()];
-  price.min = MinPrices[housingType.value.toUpperCase()];
+const setDefaultAvatarPreview = () => avatarPreviewNode.src = defaultAvatarURL;
+
+avatarFileChooserNode.addEventListener('change', () => {
+  const file = avatarFileChooserNode.files[0];
+  avatarPreviewNode.src = isFileTypeMatches(file) ? URL.createObjectURL(file) : defaultAvatarURL;
+});
+
+const isPhotoContainerEmpty = () => photoListContainerNode.querySelectorAll('.ad-form__photo').length === 0;
+
+const removePhotoPreview = () => {
+  const currentPhotoPreviewsNodes = photoListContainerNode.querySelectorAll('.ad-form__photo');
+  currentPhotoPreviewsNodes.forEach((currentPreviewNode) => currentPreviewNode.remove());
+};
+
+const setDefaultPhotoPreview = () => photoListContainerNode.appendChild(photoContainerTemplateNode);
+
+photoFileChooserNode.addEventListener('change', () => {
+  removePhotoPreview();
+  const files = photoFileChooserNode.files;
+  for (let i = 0; i < files.length; i++) {
+    if (isFileTypeMatches(files[i])) {
+      const photoContainerNode = photoContainerTemplateNode.cloneNode();
+      const photoNode = document.createElement('img');
+      photoNode.src = URL.createObjectURL(files[i]);
+      photoNode.alt = `Фото жилья ${photoListContainerNode.children.length}`;
+      photoContainerNode.appendChild(photoNode);
+      photoListContainerNode.appendChild(photoContainerNode);
+    }
+  }
+  if (isPhotoContainerEmpty()) {
+    setDefaultPhotoPreview();
+  }
+});
+
+const resetPreview = () => {
+  setDefaultAvatarPreview();
+  removePhotoPreview();
+  setDefaultPhotoPreview();
+};
+
+const addCoordinates = ({lat, lng}) => addressNode.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+
+const setPriceConstraint = (housingTypeNode) => {
+  priceNode.placeholder = MinPrices[housingTypeNode.value.toUpperCase()];
+  priceNode.min = MinPrices[housingTypeNode.value.toUpperCase()];
 };
 
 const resetForm = () => {
-  adForm.reset();
+  adFormNode.reset();
   addCoordinates({lat: TokyoCoordinates.LAT, lng: TokyoCoordinates.LNG});
-  setPriceConstraint(type);
+  setPriceConstraint(typeNode);
+  resetPreview();
 };
 
-const setFormEnabled = (enabled) => setEnabled(adForm, enabled, FORM_DISABILITY_CLASS);
+const setFormEnabled = (enabled) => setEnabled(adFormNode, enabled, FORM_DISABILITY_CLASS);
 
 const validateRooms = () => {
-  const roomNumberValue = Number(roomNumber.value);
-  const capacityValue = Number(capacity.value);
-  capacity.setCustomValidity('');
+  const roomNumberValue = Number(roomNumberNode.value);
+  const capacityValue = Number(capacityNode.value);
+  capacityNode.setCustomValidity('');
   if (roomNumberValue === 100) {
     if (capacityValue !== 0) {
-      capacity.setCustomValidity('Доступно только не для гостей');
+      capacityNode.setCustomValidity('Доступно только не для гостей');
     }
   } else {
     if (capacityValue === 0) {
-      capacity.setCustomValidity(`${roomNumberValue} комн. жильё доступно только для гостей`);
+      capacityNode.setCustomValidity(`${roomNumberValue} комн. жильё доступно только для гостей`);
     } else if (capacityValue > roomNumberValue) {
-      capacity.setCustomValidity(`В ${roomNumberValue} комн. можно разместить только ${roomNumberValue} чел.`);
+      capacityNode.setCustomValidity(`В ${roomNumberValue} комн. можно разместить только ${roomNumberValue} чел.`);
     }
   }
-  capacity.reportValidity();
+  capacityNode.reportValidity();
 };
 
 const onRoomCapacityChange = () => validateRooms();
 
-const onHousingTypeChange = () => setPriceConstraint(type);
+const onHousingTypeChange = () => setPriceConstraint(typeNode);
 
-const onTimeChange = (evt) => evt.target === timeOut ? timeIn.value = evt.target.value : timeOut.value = evt.target.value;
+const onTimeChange = (evt) => evt.target === timeOutNode ? timeInNode.value = evt.target.value : timeOutNode.value = evt.target.value;
 
-time.addEventListener('change', onTimeChange);
+timeNode.addEventListener('change', onTimeChange);
 
-type.addEventListener('change', onHousingTypeChange);
+typeNode.addEventListener('change', onHousingTypeChange);
 
-roomNumber.addEventListener('change', onRoomCapacityChange);
+roomNumberNode.addEventListener('change', onRoomCapacityChange);
 
-capacity.addEventListener('change', onRoomCapacityChange);
+capacityNode.addEventListener('change', onRoomCapacityChange);
 
 const setAdFormSubmit = (onSuccess, onError, adverts) => {
-  adForm.addEventListener('submit', (evt) => {
+  adFormNode.addEventListener('submit', (evt) => {
     evt.preventDefault();
     sendAdvert(onSuccess, onError, new FormData(evt.target));
     updateMapMarkers(adverts);
@@ -79,7 +133,7 @@ const setAdFormSubmit = (onSuccess, onError, adverts) => {
 };
 
 const setAdFormReset = (adverts) => {
-  resetButton.addEventListener('click', (evt) => {
+  resetButtonNode.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetForm();
     resetMap();
