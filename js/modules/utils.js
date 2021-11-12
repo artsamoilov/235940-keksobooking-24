@@ -3,9 +3,9 @@ const TokyoCoordinates = {
   LNG: 139.74975,
 };
 
-const setEnabled = (element, enabled, cssClass) => {
-  enabled ? element.classList.remove(cssClass) : element.classList.add(cssClass);
-  element.childNodes.forEach((child) => child.disabled = !enabled);
+const setEnabled = (node, isEnabled, cssDisabilityClass) => {
+  isEnabled ? node.classList.remove(cssDisabilityClass) : node.classList.add(cssDisabilityClass);
+  node.childNodes.forEach((childNode) => childNode.disabled = !isEnabled);
 };
 
 const isEscKey = (evt) => evt.key === 'Escape';
