@@ -12,6 +12,7 @@ const MinPrices = {
 };
 const FORM_DISABILITY_CLASS = 'ad-form--disabled';
 const PHOTO_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const ROOMS_NOT_FOR_GUESTS_VALUE = 100;
 
 const adFormNode = document.querySelector('.ad-form');
 const typeNode = adFormNode.querySelector('#type');
@@ -27,8 +28,7 @@ const photoListContainerNode = adFormNode.querySelector('.ad-form__photo-contain
 const photoFileChooserNode = photoListContainerNode.querySelector('#images');
 const photoContainerTemplateNode = photoListContainerNode.querySelector('.ad-form__photo');
 const avatarFileChooserNode = adFormNode.querySelector('#avatar');
-const avatarPreviewContainerNode = adFormNode.querySelector('.ad-form-header__preview');
-const avatarPreviewNode = avatarPreviewContainerNode.querySelector('img');
+const avatarPreviewNode = adFormNode.querySelector('.ad-form-header__preview img');
 const defaultAvatarURL = avatarPreviewNode.src;
 
 const isFileTypeMatches = (file) => {
@@ -96,7 +96,7 @@ const validateRooms = () => {
   const roomNumberValue = Number(roomNumberNode.value);
   const capacityValue = Number(capacityNode.value);
   capacityNode.setCustomValidity('');
-  if (roomNumberValue === 100) {
+  if (roomNumberValue === ROOMS_NOT_FOR_GUESTS_VALUE) {
     if (capacityValue !== 0) {
       capacityNode.setCustomValidity('Доступно только не для гостей');
     }
