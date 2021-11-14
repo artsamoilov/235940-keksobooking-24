@@ -1,5 +1,5 @@
 import {createPopup} from './popup.js';
-import {setEnabled} from './utils.js';
+import {toggleNodeState} from './utils.js';
 import {addCoordinates} from './form.js';
 import {TokyoCoordinates} from './utils.js';
 
@@ -29,7 +29,7 @@ const mainMarker = L.marker(
   },
 );
 
-const setFilterEnabled = (enabled) => setEnabled(mapFilterNode, enabled, MAP_FILTER_DISABILITY_CLASS);
+const toggleFilterState = (enabled) => toggleNodeState(mapFilterNode, enabled, MAP_FILTER_DISABILITY_CLASS);
 
 const createOfferMarker = (offer) => {
   const markerIcon = L.icon({
@@ -142,4 +142,4 @@ const checkMapFilter = (onMapFilterChange) => {
   mapFilterNode.addEventListener('change', onMapFilterChange);
 };
 
-export {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts, createMarkers};
+export {map, initializeMap, toggleFilterState, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts, createMarkers};

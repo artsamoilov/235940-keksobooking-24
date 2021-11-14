@@ -1,4 +1,4 @@
-import {setEnabled} from './utils.js';
+import {toggleNodeState} from './utils.js';
 import {TokyoCoordinates} from './utils.js';
 import {sendAdvert} from './api.js';
 import {resetMap, updateMapMarkers} from './map.js';
@@ -90,7 +90,7 @@ const resetForm = () => {
   resetPreview();
 };
 
-const setFormEnabled = (enabled) => setEnabled(adFormNode, enabled, FORM_DISABILITY_CLASS);
+const toggleFormState = (enabled) => toggleNodeState(adFormNode, enabled, FORM_DISABILITY_CLASS);
 
 const validateRooms = () => {
   const roomNumberValue = Number(roomNumberNode.value);
@@ -146,4 +146,4 @@ const setAdFormActions = (onSuccess, onError, adverts) => {
   setAdFormSubmit(onSuccess, onError, adverts);
 };
 
-export {addCoordinates, setFormEnabled, resetForm, setAdFormActions};
+export {addCoordinates, toggleFormState, resetForm, setAdFormActions};

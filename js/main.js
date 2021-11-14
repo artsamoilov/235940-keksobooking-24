@@ -1,15 +1,15 @@
-import {map, initializeMap, setFilterEnabled, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts, createMarkers} from './modules/map.js';
-import {setFormEnabled, resetForm, setAdFormActions} from './modules/form.js';
-import {showSuccessNotification, showErrorNotification} from './modules/notification.js';
+import {map, initializeMap, toggleFilterState, resetMap, checkMapFilter, updateMapMarkers, filterMaxNumberOfAdverts, createMarkers} from './modules/map.js';
+import {toggleFormState, resetForm, setAdFormActions} from './modules/form.js';
+import {showSuccessNotification, showErrorNotification, showLoadAdvertsErrorNotification} from './modules/notification.js';
 import {loadAdverts} from './modules/api.js';
-import {debounce} from './modules/debounce.js';
+import {debounce} from './modules/utils.js';
 
 const MAX_OFFERS_COUNT = 10;
 const RENDERER_DELAY = 500;
 
-const setPageEnabled = (enabled) => {
-  setFilterEnabled(enabled);
-  setFormEnabled(enabled);
+const togglePageState = (enabled) => {
+  toggleFilterState(enabled);
+  toggleFormState(enabled);
 };
 
 const onSuccess = () => {
@@ -29,12 +29,12 @@ const setMapAdverts = (adverts) => {
 };
 
 const onMapLoad = () => {
-  setPageEnabled(true);
-  loadAdverts(setMapAdverts);
+  togglePageState(true);
+  loadAdverts(setMapAdverts, showLoadAdvertsErrorNotification);
 };
 
 const renderMap = () => {
-  setPageEnabled(false);
+  togglePageState(false);
   map.addEventListener('load', onMapLoad);
   initializeMap();
 };
