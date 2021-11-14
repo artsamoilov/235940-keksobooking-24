@@ -1,11 +1,14 @@
-const loadAdverts = (onSuccess) => {
-  fetch('https://24.javascript.pages.academy/keksobooking/data')
+const API_URL = 'https://24.javascript.pages.academy/keksobooking';
+
+const loadAdverts = (onSuccess, onError) => {
+  fetch(`${API_URL}/data`)
     .then((response) => response.json())
-    .then((offers) => onSuccess(offers));
+    .then((offers) => onSuccess(offers))
+    .catch(onError);
 };
 
 const sendAdvert = (onSuccess, onError, body) => {
-  fetch('https://24.javascript.pages.academy/keksobooking',
+  fetch(API_URL,
     {
       method: 'POST',
       body,

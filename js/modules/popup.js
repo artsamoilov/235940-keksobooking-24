@@ -5,10 +5,11 @@ const HousingTypes = {
   HOUSE: 'Дом',
   PALACE: 'Дворец',
 };
+const HIDDEN_CLASS_NAME = 'hidden';
 
-const addExistingTextContent = (node, text) => text ? node.textContent = text : node.classList.add('hidden');
+const addExistingTextContent = (node, text) => text ? node.textContent = text : node.classList.add(HIDDEN_CLASS_NAME);
 
-const addExistingSource = (node, source) => source ? node.src = source : node.classList.add('hidden');
+const addExistingSource = (node, source) => source ? node.src = source : node.classList.add(HIDDEN_CLASS_NAME);
 
 const createPopup = ({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}}) => {
   const cardTemplateNode = document.querySelector('#card').content.querySelector('.popup').cloneNode(true);
@@ -34,7 +35,7 @@ const createPopup = ({author: {avatar}, offer: {title, address, price, type, roo
       }
     });
   } else {
-    popupFeaturesContainerNode.classList.add('hidden');
+    popupFeaturesContainerNode.classList.add(HIDDEN_CLASS_NAME);
   }
 
   if (photos) {
@@ -46,7 +47,7 @@ const createPopup = ({author: {avatar}, offer: {title, address, price, type, roo
     });
     photoTemplateNode.remove();
   } else {
-    popupPhotosContainerNode.remove();
+    popupPhotosContainerNode.classList.add(HIDDEN_CLASS_NAME);
   }
 
   return cardTemplateNode;

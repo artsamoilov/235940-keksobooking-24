@@ -1022,6 +1022,20 @@ fieldset {
   opacity: 0.6;
 }
 
+.adverts-load-error__message {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  padding: 20px 30px;
+  width: 100vw;
+
+  background-color: #ff5635;
+  color: #ffffff;
+
+  text-align: center;
+}
+
 .visually-hidden {
   position: absolute;
 
