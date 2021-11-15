@@ -53,8 +53,6 @@ const createMarkers = (offers) => {
   });
 };
 
-const onMainMarkerMove = ({lat, lng}) => addCoordinates({lat, lng});
-
 const initializeMap = () => {
   map.setView({
     lat: TokyoCoordinates.LAT,
@@ -67,7 +65,7 @@ const initializeMap = () => {
     },
   ).addTo(map);
   addCoordinates(mainMarker.getLatLng());
-  mainMarker.addEventListener('moveend', (evt) => onMainMarkerMove(evt.target.getLatLng()));
+  mainMarker.addEventListener('moveend', () => addCoordinates(mainMarker.getLatLng()));
   mainMarker.addTo(map);
 };
 
@@ -103,9 +101,9 @@ const isPriceMatches = (price) => {
   return true;
 };
 
-const isRoomsNumberMatches = (rooms) => isAnySelected(housingRoomsNode.value) || rooms === housingRoomsNode.value;
+const isRoomsNumberMatches = (rooms) => isAnySelected(housingRoomsNode.value) || rooms === Number(housingRoomsNode.value);
 
-const isGuestsNumberMatches = (guests) => isAnySelected(housingGuestsNode.value) || guests === housingGuestsNode.value;
+const isGuestsNumberMatches = (guests) => isAnySelected(housingGuestsNode.value) || guests === Number(housingGuestsNode.value);
 
 const isFeaturesListMatches = (features) => {
   if (features) {
