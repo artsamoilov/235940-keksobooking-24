@@ -114,7 +114,13 @@ const onRoomCapacityChange = () => validateRooms();
 
 const onHousingTypeChange = () => setPriceConstraint(typeNode);
 
-const onTimeChange = (evt) => evt.target === timeOutNode ? timeInNode.value = evt.target.value : timeOutNode.value = evt.target.value;
+const onTimeChange = (evt) => {
+  if (evt.target === timeOutNode) {
+    timeInNode.value = evt.target.value;
+  } else {
+    timeOutNode.value = evt.target.value;
+  }
+};
 
 timeNode.addEventListener('change', onTimeChange);
 
